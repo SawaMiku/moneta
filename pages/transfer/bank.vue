@@ -12,6 +12,9 @@
           :value="bankId"
           @input="$store.commit('transfer/bankId', $event)"
         />
+        <v-btn nuxt to="/" color="primary" :disabled="!bankId">
+          振り込みをキャンセル
+        </v-btn>
         <v-btn nuxt dark to="branch" color="primary" :disabled="!bankId">
           次へ
         </v-btn>

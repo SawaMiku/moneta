@@ -11,6 +11,7 @@
           item-value="id"
           :items="banks"
           :value="bankId"
+          :rules="bankIdRules"
           @input="$store.commit('signin/bankId', $event)"
         />
         <v-select
@@ -19,18 +20,21 @@
           item-value="id"
           :items="branches(bankId)"
           :value="branchId"
+          :rules="branchIdRules"
           @input="$store.commit('signin/branchId', $event)"
         />
         <v-text-field
           label="ユーザーＩＤ"
           type="text"
           :value="user"
+          :rules="userRules"
           @input="$store.commit('signin/user', $event)"
         />
         <v-text-field
           label="お名前"
           type="text"
           :value="name"
+          :rules="nameRules"
           @input="$store.commit('signin/name', $event)"
         />
         <v-text-field
@@ -42,7 +46,8 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer />
+      <v-spacer />      
+      <v-btn color="primary" to="login">ログイン画面に戻る</v-btn>
       <v-btn color="primary" @click="signin">口座開設</v-btn>
     </v-card-actions>
   </v-card>
@@ -54,9 +59,20 @@ import { mapGetters } from "vuex";
 export default {
   layout: "login",
   data: () => ({
+    bankIdRules: [
+      v => v && v.length > 0 || "選択されていません",
+    ],
+    branchIdRules: [
+      v => v && v.length > 0 || "選択されていません",
+    ],
+    userRules: [
+      v => v && v.length > 0 || "入力されていません",
+    ],
+    nameRules: [
+      v => v && v.length > 0 || "入力されていません",
+    ],
     passwordRules: [
-      v => v && v.length > 4 || "パスワードは4文字以上です",
-      v => /[0-9]/.test(v) || "パスワードは1文字以上数字を含みます",
+      v => (v && v.length >= 4) && /[0-9]/.test(v) || "パスワードは4文字以上、または1文字以上数字を含みます",
     ],
   }),
   computed: {

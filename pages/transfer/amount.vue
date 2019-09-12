@@ -13,6 +13,12 @@
           :rules="[v => v < account.total - fee || '残高が不足しています']"
           @input="$store.commit('transfer/amount', $event)"
         />
+        <v-btn nuxt dark to= "account" color="primary" :disabled="!valid">
+          戻る
+        </v-btn>
+        <v-btn nuxt dark to= "/" color="primary" :disabled="!valid">
+        　振り込みキャンセル
+        </v-btn>
         <v-btn nuxt dark color="primary" :disabled="!valid" @click="transfer">
           振込実行
         </v-btn>
@@ -23,21 +29,28 @@
 
 <script>
 import { mapGetters } from "vuex";
+import accountVue from './account.vue';
 
 export default {
   middleware: ["hasBank", "hasBranch", "hasAccount"],
   data: () => ({
     valid: true,
-  }),
+  }),         
   computed: {
     ...mapGetters("transfer", ["fee", "amount"]),
     ...mapGetters("login", ["account"]),
   },
   methods: {
     transfer() {
-      this.transferFrom();
-      this.transferTo();
-      this.$router.push("/");
+      var result = window.confirm("振り込みしますか");
+      if(result == true){
+        alert("振り込み完了しました");
+        this.transferFrom();
+        this.transferTo();
+        this.$router.push("/");
+      }
+      else{
+      }
     },
     transferFrom() {
       let total = this.account.total;
